@@ -1,0 +1,37 @@
+ticketing-api/node_modules
+ticketing-api/public/hot
+ticketing-api/public/storage
+ticketing-api/storage/*.key
+ticketing-api/vendor
+ticketing-api/.env
+ticketing-api/.env.backup
+ticketing-api/.phpunit.result.cache
+ticketing-api/docker-compose.override.yml
+ticketing-api/Homestead.json
+ticketing-api/Homestead.yaml
+ticketing-api/npm-debug.log
+ticketing-api/yarn-error.log
+
+ticketing-vue/.DS_Store
+ticketing-vue/node_modules
+ticketing-vue/dist
+
+
+# local env files
+ticketing-vue/.env.local
+ticketing-vue/.env.*.local
+
+# Log files
+ticketing-vue/npm-debug.log*
+ticketing-vue/yarn-debug.log*
+ticketing-vue/yarn-error.log*
+ticketing-vue/pnpm-debug.log*
+
+# Editor directories and files
+ticketing-vue/.idea
+ticketing-vue/.vscode
+ticketing-vue/*.suo
+ticketing-vue/*.ntvs*
+ticketing-vue/*.njsproj
+ticketing-vue/*.sln
+ticketing-vue/*.sw?
