@@ -66,7 +66,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function logout() {
-        Auth::user()->tokens()->delete();
+        User::find(Auth::id())->tokens()->delete();
 
         return response()->json([
             'message' => 'Logged out.'
