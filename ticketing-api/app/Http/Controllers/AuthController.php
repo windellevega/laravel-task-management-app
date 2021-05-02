@@ -21,7 +21,8 @@ class AuthController extends Controller
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
             'email'         => $request->email,
-            'password'      => bcrypt($request->password)
+            'password'      => bcrypt($request->password),
+            'role'          => 2
         ]);
 
         $token = $user->createToken('TicketingAPI')->plainTextToken;
