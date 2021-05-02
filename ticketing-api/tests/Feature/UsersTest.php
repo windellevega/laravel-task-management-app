@@ -50,7 +50,27 @@ class UsersTest extends TestCase
 
     /**
      * 
-     * Test feature api/login
+     * Test feature api/user
+     *
+     * @test
+     */
+    public function a_user_can_get_information()
+    {
+        $user = User::where('email', 'admin@example.com')
+                    ->first();
+
+        $token = $user->createToken('TicketingAPI')->plainTextToken;
+
+        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            ->getJson('api/user')
+            ->assertJsonStructure(['id', 'first_name', 'last_name', 'email'])
+            ->assertJson(['email' => 'admin@example.com']);
+            
+    }
+
+    /**
+     * 
+     * Test feature api/logout
      *
      * @test
      */
@@ -64,5 +84,31 @@ class UsersTest extends TestCase
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->post('api/logout')
             ->assertJson(['message' => 'Logged out.']);
+    }
+
+    /**
+     * 
+     * Test routes api/user with unauthenticated user
+     *
+     * @test
+     */
+    public function unauthenticated_user_cannot_access_get_user()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->getJson('api/user');
+    }
+
+    /**
+     * 
+     * Test route api/logout with unauthenticated user
+     *
+     * @test
+     */
+    public function unauthenticated_user_cannot_access_logout()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->postJson('api/logout');
     }
 }
