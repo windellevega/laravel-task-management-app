@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Register a new user and create token
-     *
-     * @param  App\Http\Requests\UserStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(UserStoreRequest $request) {
+    public function register(UserStoreRequest $request): JsonResponse
+    {
         $user = User::create([
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
@@ -35,13 +31,8 @@ class AuthController extends Controller
         return response()->json($response, 201);
     }
 
-    /**
-     * Login user and create token
-     *
-     * @param  App\Http\Requests\UserLoginRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function login(UserLoginRequest $request) {
+    public function login(UserLoginRequest $request): JsonResponse
+    {
         $user = User::where('email', $request->email)
                 ->first();
 
@@ -60,13 +51,9 @@ class AuthController extends Controller
 
         return response()->json($response, 201);
     }
-    
-    /**
-     * Logout user and delete saved token
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function logout() {
+
+    public function logout(): JsonResponse
+    {
         User::find(Auth::id())->tokens()->delete();
 
         return response()->json([

@@ -25,7 +25,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'user_id' => 1,
-            'assigned_to_id' => User::factory(1)->create()->first()
+            'assigned_to_id' => rand(2, User::count())
         ];
     }
 }
