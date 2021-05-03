@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStoreRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,32 +26,37 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request)
     {
-        
+        $task = Task::create([
+            'title'             => $request->title,
+            'user_id'           => Auth::id(),
+            'assigned_to_id'    => $request->assigned_to_id
+        ]);
+
+        return response()->json($task, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Task $task): JsonResponse
     {
-        //
+        if($task->user_id != Auth::id() && $task->assigned_to_id != Auth::id()){
+            abort(403);
+        }
+
+        $task->load('checklists.statusHistory');
+
+        return response()->json($task);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(TaskStoreRequest $request, Task $task): JsonResponse
     {
-        //
+        if($task->user_id != Auth::id()){
+            abort(403);
+        }
+
+        $task->update($request->validated());
+
+        return response()->json($task);
     }
 
     /**
@@ -59,8 +65,14 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        //
+        if($task->user_id != Auth::id()){
+            abort(403);
+        }
+
+        $task->delete();
+
+        return response()->json(['message' => 'Task has been deleted.']);
     }
 }

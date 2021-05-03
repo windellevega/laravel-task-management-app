@@ -9,3 +9,4 @@ This app is a simple ticketing system that can be used to assign task to a user 
 4. Run `php artisan key:generate` to generate application keys
 5. Run `php artisan migrate` to migrate the tables to your database
 6. Run `php artisan db:seed` to populate your database with pre-defined data
+7. Run `php artisan test` to test features
