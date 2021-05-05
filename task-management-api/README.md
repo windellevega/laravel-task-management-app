@@ -1,4 +1,4 @@
-## Laravel Ticketing App API
+## Laravel Task Management App API
 
 This app is a simple ticketing system that can be used to assign task to a user and track progress through the different checklists on the task
 

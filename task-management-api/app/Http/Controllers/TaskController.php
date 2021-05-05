@@ -20,13 +20,7 @@ class TaskController extends Controller
             
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(TaskStoreRequest $request)
+    public function store(TaskStoreRequest $request): JsonResponse
     {
         $task = Task::create([
             'title'             => $request->title,
@@ -59,13 +53,7 @@ class TaskController extends Controller
         return response()->json($task);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Task $task)
+    public function destroy(Task $task): JsonResponse
     {
         if($task->user_id != Auth::id()){
             abort(403);
