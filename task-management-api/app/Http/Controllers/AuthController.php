@@ -42,7 +42,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $response = [
             'user'  => $user,

@@ -57,7 +57,7 @@ class UsersTest extends TestCase
         $user = User::where('email', 'admin@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/user')
@@ -77,7 +77,7 @@ class UsersTest extends TestCase
         $user = User::where('email', 'admin@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->post('api/logout')

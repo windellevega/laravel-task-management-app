@@ -1,6 +1,6 @@
 ## Laravel Task Management App API
 
-This app is a simple ticketing system that can be used to assign task to a user and track progress through the different checklists on the task
+This app is a simple task management system that can be used to assign task to a user and track progress through the different checklists on the task
 
 ## Installation
 1. After cloning the repository, create a `.env` file using `.env.example`

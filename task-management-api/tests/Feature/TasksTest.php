@@ -22,7 +22,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'johndoe@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/tasks')
@@ -41,7 +41,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'johndoe@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         try{
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -68,7 +68,7 @@ class TasksTest extends TestCase
             'title' => 'Sample task'
         ];
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->postJson('api/tasks', $task)
@@ -87,7 +87,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'admin@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/tasks/1')
@@ -106,7 +106,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'johndoe@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         try{
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -138,7 +138,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'admin@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
                     ->putJson('api/tasks/1', $update)
@@ -163,7 +163,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'johndoe@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         try {
             $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -186,7 +186,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'admin@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
                     ->deleteJson('api/tasks/1')
@@ -204,7 +204,7 @@ class TasksTest extends TestCase
         $user = User::where('email', 'johndoe@example.com')
                     ->first();
 
-        $token = $user->createToken('TicketingAPI')->plainTextToken;
+        $token = $user->createToken($user->email)->plainTextToken;
 
         try {
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
