@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/tasks/{task}', [TaskController::class, 'show']);
+    Route::post('/checklists', [ChecklistController::class, 'store']);
+    Route::put('/checklists/{checklist}', [ChecklistController:: class, 'update']);
+    Route::delete('/checklists/{checklist}', [ChecklistController:: class, 'destroy']);
+    Route::put('/checklists/{checklist}/status', [ChecklistController:: class, 'updateStatus']);
 
     Route::group(['middleware' => 'is_admin'], function() {
         Route::post('/tasks', [TaskController::class, 'store']);

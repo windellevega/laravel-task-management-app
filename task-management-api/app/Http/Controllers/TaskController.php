@@ -39,7 +39,7 @@ class TaskController extends Controller
 
         $task->load('checklists.statusHistory');
 
-        return response()->json($task);
+        return response()->json($task, 200);
     }
 
     public function update(TaskStoreRequest $request, Task $task): JsonResponse
@@ -50,7 +50,7 @@ class TaskController extends Controller
 
         $task->update($request->validated());
 
-        return response()->json($task);
+        return response()->json($task, 200);
     }
 
     public function destroy(Task $task): JsonResponse
@@ -61,6 +61,8 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return response()->json(['message' => 'Task has been deleted.']);
+        return response()->json([
+            'message' => 'Task has been deleted.'
+        ], 200);
     }
 }
