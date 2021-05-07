@@ -54,12 +54,10 @@ class UsersTest extends TestCase
      */
     public function testUserCanGetInformation()
     {
-        $token = $this->login('admin@example.com', 'password');
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
             ->getJson('api/user')
             ->assertJsonStructure(['id', 'first_name', 'last_name', 'email'])
-            ->assertJson(['email' => 'admin@example.com']);
+            ->assertJson(['email' => 'johndoe@example.com']);
             
     }
 
@@ -71,9 +69,7 @@ class UsersTest extends TestCase
      */
     public function testUserCanLogout()
     {
-        $token = $this->login('admin@example.com', 'password');
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
             ->post('api/logout')
             ->assertJson(['message' => 'Logged out.']);
     }

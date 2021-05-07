@@ -19,9 +19,7 @@ class TasksTest extends TestCase
      */
     public function testNonAdminUserCanRetrieveTasksGiven()
     {
-        $token = $this->login('johndoe@example.com', 'password');
-        
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
             ->getJson('api/tasks')
             ->assertStatus(200);
             
@@ -35,10 +33,8 @@ class TasksTest extends TestCase
      */
     public function testNonAdminUserCannotCreateTask()
     {
-        $token = $this->login('johndoe@example.com', 'password');
-
         try{
-            $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
                 ->postJson('api/tasks');
         }
         catch (Throwable $e) {
@@ -59,9 +55,7 @@ class TasksTest extends TestCase
             'title' => 'Sample task'
         ];
 
-        $token = $this->login('admin@example.com', 'password');
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->adminToken])
             ->postJson('api/tasks', $task)
             ->assertStatus(201);
             
@@ -75,9 +69,7 @@ class TasksTest extends TestCase
      */
     public function testAdminUserCanViewTaskAssignedOrCreated()
     {
-        $token = $this->login('admin@example.com', 'password');
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->adminToken])
             ->getJson('api/tasks/1')
             ->assertJsonStructure(['id', 'title', 'user_id']);
             
@@ -91,10 +83,8 @@ class TasksTest extends TestCase
      */
     public function testUserCannotViewTaskNotAssignedOrNotCreated()
     {
-        $token = $this->login('johndoe@example.com', 'password');
-
         try{
-            $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
                 ->getJson('api/tasks/1')
                 ->assertStatus(200);
         }
@@ -120,9 +110,7 @@ class TasksTest extends TestCase
         $task->title = 'Updated task';
         $task->assigned_to_id = 5;
 
-        $token = $this->login('admin@example.com', 'password');
-
-        $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $result = $this->withHeaders(['Authorization' => 'Bearer ' . $this->adminToken])
                     ->putJson('api/tasks/1', $update)
                     ->content();
         
@@ -142,10 +130,8 @@ class TasksTest extends TestCase
             'assigned_to_id'    => 5
         ];
 
-        $token = $this->login('johndoe@example.com', 'password');
-
         try {
-            $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            $result = $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
                     ->putJson('api/tasks/1', $update)
                     ->assertStatus(200);
         }
@@ -162,9 +148,7 @@ class TasksTest extends TestCase
      */
     public function testAdminUserCanDeleteTask()
     {   
-        $token = $this->login('admin@example.com', 'password');
-
-        $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+        $this->withHeaders(['Authorization' => 'Bearer ' . $this->adminToken])
                     ->deleteJson('api/tasks/1')
                     ->assertStatus(200);
     }
@@ -177,10 +161,8 @@ class TasksTest extends TestCase
      */
     public function testNonAdminUserCannotDeleteTask()
     {   
-        $token = $this->login('johndoe@example.com', 'password');
-
         try {
-            $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            $this->withHeaders(['Authorization' => 'Bearer ' . $this->userToken])
                     ->deleteJson('api/tasks/1')
                     ->assertStatus(403);
         }
