@@ -13,7 +13,7 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function a_user_can_register()
+    public function testUserCanRegister()
     {
         $user = [
             'first_name'            => 'Juan',
@@ -34,7 +34,7 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function a_user_can_login()
+    public function testUserCanLogin()
     {
         $user = [
             'email'                 => 'admin@example.com',
@@ -42,7 +42,7 @@ class UsersTest extends TestCase
         ];
 
         $this->postJson('api/login', $user)
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJsonStructure(['user', 'token']);
     }
 
@@ -52,12 +52,9 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function a_user_can_get_information()
+    public function testUserCanGetInformation()
     {
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/user')
@@ -72,12 +69,9 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function a_user_can_logout()
+    public function testUserCanLogout()
     {
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->post('api/logout')
@@ -90,7 +84,7 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function unauthenticated_user_cannot_access_get_user()
+    public function testUnauthenticatedUserCannotAccessGetUser()
     {
         $this->withoutExceptionHandling();
         $this->expectException('Illuminate\Auth\AuthenticationException');
@@ -103,7 +97,7 @@ class UsersTest extends TestCase
      *
      * @test
      */
-    public function unauthenticated_user_cannot_access_logout()
+    public function testUnauthenticatedUserCannotAccessLogout()
     {
         $this->withoutExceptionHandling();
         $this->expectException('Illuminate\Auth\AuthenticationException');

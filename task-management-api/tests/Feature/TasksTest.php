@@ -17,13 +17,10 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function a_user_can_retrieve_tasks_given()
+    public function testNonAdminUserCanRetrieveTasksGiven()
     {
-        $user = User::where('email', 'johndoe@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
-
+        $token = $this->login('johndoe@example.com', 'password');
+        
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/tasks')
             ->assertStatus(200);
@@ -36,12 +33,9 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function non_admin_user_cannot_create_task()
+    public function testNonAdminUserCannotCreateTask()
     {
-        $user = User::where('email', 'johndoe@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('johndoe@example.com', 'password');
 
         try{
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -59,16 +53,13 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function admin_user_can_create_task()
+    public function testAdminUserCanCreateTask()
     {
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-        
         $task = [
             'title' => 'Sample task'
         ];
 
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->postJson('api/tasks', $task)
@@ -82,12 +73,9 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function user_can_view_task_assigned_or_created()
+    public function testAdminUserCanViewTaskAssignedOrCreated()
     {
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
             ->getJson('api/tasks/1')
@@ -101,12 +89,9 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function user_cannot_view_task_not_assigned_or_not_created()
+    public function testUserCannotViewTaskNotAssignedOrNotCreated()
     {
-        $user = User::where('email', 'johndoe@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('johndoe@example.com', 'password');
 
         try{
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -124,7 +109,7 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function admin_can_update_task()
+    public function testAdminUserCanUpdateTask()
     {   
         $update = [
             'title'             => 'Updated task',
@@ -135,10 +120,7 @@ class TasksTest extends TestCase
         $task->title = 'Updated task';
         $task->assigned_to_id = 5;
 
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
                     ->putJson('api/tasks/1', $update)
@@ -153,17 +135,14 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function non_admin_user_cannot_update_task()
+    public function testNonAdminUserCannotUpdateTask()
     {   
         $update = [
             'title'             => 'Updated task',
             'assigned_to_id'    => 5
         ];
 
-        $user = User::where('email', 'johndoe@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('johndoe@example.com', 'password');
 
         try {
             $result = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
@@ -181,12 +160,9 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function admin_can_delete_task()
+    public function testAdminUserCanDeleteTask()
     {   
-        $user = User::where('email', 'admin@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('admin@example.com', 'password');
 
         $this->withHeaders(['Authorization' => 'Bearer ' . $token])
                     ->deleteJson('api/tasks/1')
@@ -199,12 +175,9 @@ class TasksTest extends TestCase
      *
      * @test
      */
-    public function non_admin_user_cannot_delete_task()
+    public function testNonAdminUserCannotDeleteTask()
     {   
-        $user = User::where('email', 'johndoe@example.com')
-                    ->first();
-
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = $this->login('johndoe@example.com', 'password');
 
         try {
             $this->withHeaders(['Authorization' => 'Bearer ' . $token])
