@@ -7,20 +7,21 @@
     </CCardHeader>
     <CCardBody>
       <CDataTable
-        :hover="hover"
-        :striped="striped"
-        :border="border"
-        :small="small"
-        :fixed="fixed"
+        :hover="true"
+        :border="true"
         :items="items"
         :fields="fields"
-        :items-per-page="small ? 10 : 5"
-        :dark="dark"
+        :items-per-page="10"
         pagination
       >
-        <template #status="{ item }">
+        <template #progress="{ item }">
           <td>
-            <CBadge :color="getBadge(item.status)">{{ item.status }}</CBadge>
+            <CProgress
+              :value="item.progress"
+              :color="getProgressColor(item.progress)"
+              show-percentage
+              class="mb-2"
+            />
           </td>
         </template>
       </CDataTable>
@@ -36,31 +37,25 @@ export default {
     fields: {
       type: Array,
       default() {
-        return ["username", "registered", "role", "status"];
+        return ["title", "worker", "created", "progress"];
       },
     },
     caption: {
       type: String,
       default: "Table",
-    },
-    hover: Boolean,
-    striped: Boolean,
-    border: Boolean,
-    small: Boolean,
-    fixed: Boolean,
-    dark: Boolean,
+    }
   },
   methods: {
-    getBadge(status) {
-      return status === "Active"
+    getProgressColor(progress) {
+      return progress == 100
         ? "success"
-        : status === "Inactive"
-        ? "secondary"
-        : status === "Pending"
+        : progress >= 51 && progress <= 99
+        ? "info"
+        : progress >= 20 && progress <= 50
         ? "warning"
-        : status === "Banned"
+        : progress >= 0 && progress <= 19
         ? "danger"
-        : "primary";
+        : "dark";
     },
   },
 };
