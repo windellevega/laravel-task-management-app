@@ -1,4 +1,4 @@
-# ticketing-vue
+# task-management-vue
 
 ## Project setup
 ```
