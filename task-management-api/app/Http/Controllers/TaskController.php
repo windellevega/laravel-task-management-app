@@ -13,6 +13,8 @@ class TaskController extends Controller
     public function index(): JsonResponse
     {
         $tasks = Task::where('assigned_to_id', Auth::id())
+                    ->with('creator')
+                    ->with('worker')
                     ->get();
         $tasks->load('checklists.statusHistory');
 
@@ -36,8 +38,7 @@ class TaskController extends Controller
         if($task->user_id != Auth::id() && $task->assigned_to_id != Auth::id()){
             abort(403);
         }
-
-        $task->load('checklists.statusHistory');
+        $task->load(['creator', 'worker', 'checklists.statusHistory']);
 
         return response()->json($task, 200);
     }
