@@ -5,8 +5,11 @@ import Router from 'vue-router'
 const TheContainer = () => import('@/containers/TheContainer')
 
 //Components
-const AssignedTasks = () => import('@/components/AssignedTasks')
-const MyTasks = () => import('@/components/MyTasks')
+const AssignedTasks = () => import('@/components/Task/AssignedTasks')
+const MyTasks = () => import('@/components/Task/MyTasks')
+
+const Login = () => import('@/components/Login')
+const Register = () => import('@/components/Register')
 
 Vue.use(Router)
 
@@ -20,8 +23,7 @@ export default new Router({
 function configRoutes () {
   return [
     {
-      path: '',
-      redirect: '',
+      path: '/',
       name: 'Home',
       component: TheContainer,
       children: [
@@ -36,6 +38,16 @@ function configRoutes () {
           component: MyTasks
         },
       ]
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     }
   ]
 }
