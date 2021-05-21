@@ -31,6 +31,6 @@ class Checklist extends Model
         return $this->belongsToMany(Status::class)
                 ->withPivot('remarks')
                 ->withTimestamps()
-                ->orderBy('checklist_status.created_at');
+                ->orderBy('checklist_status.created_at', 'desc');
     }
 }
