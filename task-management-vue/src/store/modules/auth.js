@@ -16,9 +16,9 @@ const mutations = {
 }
 
 const actions = {
-    login: async ({ state, commit }, credentials) => {
+    login: async ({ commit }, credentials) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/login', credentials);
+            const response = await axios.post('api/login', credentials);
 
             commit('LOGIN_SUCCESS', response.data);
 
