@@ -1,6 +1,3 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
 // Containers
 const TheContainer = () => import('@/containers/TheContainer')
 
@@ -11,17 +8,10 @@ const MyTasks = () => import('@/components/Task/MyTasks')
 const Login = () => import('@/components/Login')
 const Register = () => import('@/components/Register')
 
-Vue.use(Router)
-
-export default new Router({
-  mode: 'hash', // https://router.vuejs.org/api/#mode
-  linkActiveClass: 'active',
-  scrollBehavior: () => ({ y: 0 }),
-  routes: configRoutes()
-})
-
-function configRoutes () {
-  return [
+export default {
+  mode: 'history',
+  base: '/',
+  routes: [
     {
       path: '/',
       name: 'Home',
@@ -29,15 +19,24 @@ function configRoutes () {
       children: [
         {
           path: 'assigned-tasks',
-          name: 'Assined Tasks',
-          component: AssignedTasks
+          name: 'Assigned Tasks',
+          component: AssignedTasks,
+          meta: {
+            requiresAuth: true
+          }
         },
         {
           path: 'my-tasks',
           name: 'My Tasks',
-          component: MyTasks
+          component: MyTasks,
+          meta: {
+            requiresAuth: true
+          }
         },
-      ]
+      ],
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/login',

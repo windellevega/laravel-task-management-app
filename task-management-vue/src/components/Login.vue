@@ -14,18 +14,20 @@
                     autocomplete="email"
                     type="email"
                     prepend="@"
+                    v-model="form.email"
                   >
                   </CInput>
                   <CInput
                     placeholder="Password"
                     type="password"
                     autocomplete="curent-password"
+                    v-model="form.password"
                   >
                     <template #prepend-content><CIcon name="cil-lock-locked"/></template>
                   </CInput>
                   <CRow>
                     <CCol col="6" class="text-left">
-                      <CButton color="primary" class="px-4" @click="login">Login</CButton>
+                      <CButton color="primary" class="px-4" @click="onSubmit">Login</CButton>
                     </CCol>
                     <CCol col="6" class="text-right">
                       <!-- <CButton color="link" class="px-0">Forgot password?</CButton> -->
@@ -43,14 +45,31 @@
 </template>
 
 <script>
-export default {
-  name: 'Login',
-  methods: {
-    login() {
-      this.$router.push('/');
-    }
-  },
-}
+  import { mapActions } from 'vuex';
+
+  export default {
+    name: 'Login',
+    data() {
+      return {
+        form: {
+          email: '',
+          password: '',
+        }
+      };
+    },
+    methods: {
+      ...mapActions({
+        login: 'auth/login'
+      }),
+
+      onSubmit() {
+        this.login(this.form)
+        .then(() => {
+          this.$router.push('/');
+        });
+      }
+    },
+  }
 </script>
 <style scoped>
 
