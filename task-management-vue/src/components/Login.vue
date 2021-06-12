@@ -6,7 +6,7 @@
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
-                <CForm>
+                <CForm v-on:keyup.enter="onSubmit">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <CInput
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'Login',
@@ -55,7 +55,7 @@
           email: '',
           password: '',
         }
-      };
+      }
     },
     methods: {
       ...mapActions({
@@ -65,7 +65,7 @@
       onSubmit() {
         this.login(this.form)
         .then(() => {
-          this.$router.push('/');
+          this.$router.push('/')
         });
       }
     },

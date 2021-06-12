@@ -25,11 +25,9 @@ Vue.prototype.$log = console.log.bind(console)
 
  router.beforeEach((to, from, next) => {
    if (to.meta.requiresAuth && !store.state.auth.isLoggedIn) {
-     console.log('You must be logged in')
      next({ path: '/login' })
    } 
    else {
-    console.log('You are logged in')
      next()
    }
  })

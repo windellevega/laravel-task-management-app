@@ -18,19 +18,33 @@
     <CDropdownItem> 
       <CIcon name="cil-user" /> Profile 
     </CDropdownItem>
-    <CDropdownItem> 
+    <CDropdownItem @click="onLogout"> 
       <CIcon name="cil-lock-locked" /> Logout 
     </CDropdownItem>
   </CDropdown>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: "TheHeaderDropdownAccnt",
   data() {
     return {
-      itemsCount: 42,
-    };
+
+    }
+  },
+  methods: {
+    ...mapActions({
+      logout: 'auth/logout'
+    }),
+
+    onLogout() {
+      this.logout()
+      .then(() => {
+        this.$router.push('login')
+      });
+    }
   },
 };
 </script>
