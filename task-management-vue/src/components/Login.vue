@@ -6,6 +6,13 @@
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
+                <CAlert
+                  color="danger"
+                  :show.sync="logInFailedAlertCounter"
+                  closeButton
+                >
+                  Invalid login credentials.
+                </CAlert>
                 <CForm v-on:keyup.enter="onSubmit">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
@@ -27,7 +34,11 @@
                   </CInput>
                   <CRow>
                     <CCol col="6" class="text-left">
-                      <CButton color="primary" class="px-4" @click="onSubmit">Login</CButton>
+                      <CButton color="primary" class="px-4" @click="onSubmit" :hidden="isLoading">Login</CButton>
+                      <CButton color="primary" class="px-4" :hidden="!isLoading">
+                        Please wait <CSpinner color="info" size="sm" :hidden="!isLoading"/>
+                      </CButton>
+                      
                     </CCol>
                     <CCol col="6" class="text-right">
                       <!-- <CButton color="link" class="px-0">Forgot password?</CButton> -->
@@ -45,7 +56,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     name: 'Login',
@@ -54,19 +65,34 @@
         form: {
           email: '',
           password: '',
-        }
+        },
+        logInFailedAlertCounter: 0,
+        logInSuccess: false
       }
     },
     methods: {
       ...mapActions({
-        login: 'auth/login'
+        login: 'auth/login',
+      }),
+
+      ...mapGetters({
+        isLoggingIn: 'auth/isLoggingIn'
       }),
 
       onSubmit() {
         this.login(this.form)
         .then(() => {
           this.$router.push('/')
-        });
+        })
+        .catch(() =>{
+          this.logInFailedAlertCounter = 5
+        })
+      },
+    },
+
+    computed: {
+      isLoading() {
+        return this.isLoggingIn()
       }
     },
   }
